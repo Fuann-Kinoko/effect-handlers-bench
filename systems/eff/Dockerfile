@@ -20,6 +20,7 @@ WORKDIR /home/ubuntu/eff
 RUN git clone https://github.com/matijapretnar/eff.git . && \
     git checkout c27ffee3ddaaf6de383328d90750311508512ba6
 
+RUN opam install menhir.20220210 -y
 RUN opam install . -y
 RUN opam exec -- dune build src/eff/
 

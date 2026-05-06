@@ -1,6 +1,6 @@
 DOCKERHUB=effecthandlers/effect-handlers
 
-all: bench_eff bench_hia bench_koka bench_links bench_ocaml
+all: bench_eff bench_hia bench_koka bench_links bench_ocaml bench_minirustc
 
 system_base:
 	docker build --build-arg UID=$$(id -u) --build-arg GID=$$(id -g) -t $(DOCKERHUB):base systems
@@ -46,8 +46,11 @@ system_koka: system_base
 	docker build -t effecthandlers/effect-handlers:koka systems/koka
 
 bench_koka: system_koka
-	docker run -it --init -v $(shell pwd):/source $(DOCKERHUB):koka \
+	docker run -it --init --ulimit stack=-1:-1 -v $(shell pwd):/source $(DOCKERHUB):koka \
 		make -C /source/benchmarks/koka
+# bench_koka: system_koka
+# 	docker run -it --init -v $(shell pwd):/source $(DOCKERHUB):koka \
+# 		make -C /source/benchmarks/koka
 
 test_koka: system_koka
 	docker run -v $(shell pwd):/source $(DOCKERHUB):koka \
@@ -100,6 +103,30 @@ bench_libhandler: system_libhandler
 test_libhandler: system_libhandler
 	docker run -v $(shell pwd):/source $(DOCKERHUB):libhandler \
 		make -C /source/benchmarks/libhandler test
+
+# MiniRust -- uses ubuntu:24.04 directly (matches host glibc) with pre-compiled compiler mounted from host
+system_minirustc:
+	docker build -t $(DOCKERHUB):minirustc systems/minirustc
+
+bench_minirustc: system_minirustc
+	docker run -it --init \
+		-v $(shell pwd):/source \
+		-v $(HOME)/minirustc:/minirustc \
+		-v $(HOME)/repos/libuv:/libuv \
+		-e LD_LIBRARY_PATH=/libuv/build \
+		-e MINIRUSTC_LIBUV_ROOT=/libuv \
+		$(DOCKERHUB):minirustc \
+		make -C /source/benchmarks/minirustc
+
+test_minirustc: system_minirustc
+	docker run \
+		-v $(shell pwd):/source \
+		-v $(HOME)/minirustc:/minirustc \
+		-v $(HOME)/repos/libuv:/libuv \
+		-e LD_LIBRARY_PATH=/libuv/build \
+		-e MINIRUSTC_LIBUV_ROOT=/libuv \
+		$(DOCKERHUB):minirustc \
+		make -C /source/benchmarks/minirustc test
 
 # OCaml
 system_ocaml: system_base

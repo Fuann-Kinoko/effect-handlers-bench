@@ -11,3 +11,19 @@ _results
 *.hi
 *.dyn_o
 *.dyn_hi
+
+# C++ value_semantics binaries
+scripts/value_semantics/**/*.O2
+scripts/value_semantics/**/*.O3
+scripts/value_semantics/webgraph/naive_ref
+scripts/value_semantics/webgraph/efficient_val
+scripts/value_semantics/dlist/naive_ref
+scripts/value_semantics/dlist/efficient_val
+scripts/value_semantics/results.csv
+scripts/value_semantics/generator/generator_minirustc
+scripts/value_semantics/generator/generator_arena
+scripts/value_semantics/generator/generator_ptr
+scripts/value_semantics/generator/results.csv
+scripts/value_semantics/generator/generator_patched.rs
+scripts/value_semantics/generator/generator_box
+scripts/value_semantics/generator/generator_arena_rs
