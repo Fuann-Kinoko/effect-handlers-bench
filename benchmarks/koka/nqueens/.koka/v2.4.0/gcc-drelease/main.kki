@@ -1,0 +1,119 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:search` effect
+recursive type .hnd-search <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-search(ctl-fail: forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-search :: (E, V) -> V),(e :: E),a>, ctl-pick: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/int,(.hnd-search :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-fail : forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-search :: (E, V) -> V),(e :: E),a>, ctl-pick : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/int,(.hnd-search :: (E, V) -> V),(e :: E),a>) -> (.hnd-search :: (E, V) -> V)<(e :: E),a>;
+};
+// `:search` effect
+type search :: HX {
+  con Search<(e :: E),a>((.hnd-search :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-search :: (E, V) -> V)<(e :: E),a>) -> (search :: HX);
+};
+;
+ 
+//------------------------------
+//#kki: declarations
+ 
+// runtime tag for the `:search` effect
+val .tag-search : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-search :: (E, V) -> V)>;
+// handler for the `:search` effect
+fun .handle-search : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-search :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(search :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `fail` operation out of the `:search` effect handler
+fun .select-fail : forall<a,(e :: E),b> (^ hnd : (.hnd-search :: (E, V) -> V)<(e :: E),b>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<a,(.hnd-search :: (E, V) -> V),(e :: E),b>;
+// select `pick` operation out of the `:search` effect handler
+fun .select-pick : forall<(e :: E),a> (^ hnd : (.hnd-search :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/int,(.hnd-search :: (E, V) -> V),(e :: E),a>;
+// call `fail` operation of the `:search` effect
+fun fail : forall<a> () -> <(std/core/types/handled :: HX -> X)<(search :: HX)>> a;
+// call `pick` operation of the `:search` effect
+fun pick : (size : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(search :: HX)>> std/core/types/int;
+fun safe : (queen : std/core/types/int, diag : std/core/types/int, xs : solution) -> std/core/types/bool;
+// monadic lift
+fun .mlift695-place : (rest : solution, next : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(search :: HX)>> (std/core/list :: V -> V)<std/core/types/int>;
+// monadic lift
+fun .mlift696-place : (size : std/core/types/int, rest : solution) -> <(std/core/types/div :: X),(std/core/types/handled :: HX -> X)<(search :: HX)>> (std/core/list :: V -> V)<std/core/types/int>;
+fun place : (size : std/core/types/int, column : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(search :: HX)>> solution;
+// lifted local: run, loop
+fun .lift577-run : (resume0 : (std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int, size : std/core/types/int, i : std/core/types/int, a : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+fun run : (n : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: E),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+recursive specialize "*___" fun .lift577-run // inline size: 9
+  = fn<<(std/core/types/div :: E)>>(resume0: (std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int, size: std/core/types/int, i: std/core/types/int, a: std/core/types/int){
+    match ((std/core/(==.1)(i, size))) {
+      ((std/core/types/True() : std/core/types/bool ) as .pat: std/core/types/bool)
+         -> val y.566 : std/core/types/int
+                  = resume0(i);
+        std/core/int-add(a, y.566);
+      ((.skip std/core/types/False() : std/core/types/bool ) as .pat0: std/core/types/bool)
+         -> val y1.570 : std/core/types/int
+                  = resume0(i);
+        (fn<<(std/core/types/div :: E)>>(i: std/core/types/int, a: std/core/types/int){
+          main/.lift577-run(resume0, size, i, a);
+        })((std/core/int-add(i, 1)), (std/core/int-add(a, y1.570)));
+    };
+  };
+inline borrow "^" fun .select-fail // inline size: 0
+  = forall<a,(e :: E),b> fn(hnd: (.hnd-search :: (E, V) -> V)<(e :: E),b>){
+    (match (hnd) {
+      ((.skip main/.Hnd-search((ctl-fail: forall<c> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<c,(.hnd-search :: (E, V) -> V),(e :: E),b>) : forall<c> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<c,(.hnd-search :: (E, V) -> V),(e :: E),b>, (.pat0: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/int,(.hnd-search :: (E, V) -> V),(e :: E),b>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/int,(.hnd-search :: (E, V) -> V),(e :: E),b>) : (.hnd-search :: (E, V) -> V)<(e :: E),b> ) as .pat: ((.hnd-search :: (E, V) -> V)<(e :: E),b>))
+         -> ctl-fail<a>;
+    });
+  };
+inline borrow "^" fun .select-pick // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-search :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-search((.pat0: forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-search :: (E, V) -> V),(e :: E),a>) : forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-search :: (E, V) -> V),(e :: E),a>, (ctl-pick: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/int,(.hnd-search :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/int,(.hnd-search :: (E, V) -> V),(e :: E),a>) : (.hnd-search :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-search :: (E, V) -> V)<(e :: E),a>))
+         -> ctl-pick;
+    });
+  };
+inline fun fail // inline size: 5
+  = forall<a> fn<<(std/core/types/handled :: HX -> X)<(search :: HX)>>>(){
+    std/core/hnd/.perform0<a,<(std/core/types/handled :: HX -> X)<(search :: HX)>>,(.hnd-search :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(search :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-search :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(search :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-search :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-search :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(search :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(search :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> main/.select-fail<a,(e :: E),b>));
+  };
+inline fun pick // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(search :: HX)>>>(size: std/core/types/int){
+    std/core/hnd/.perform1<std/core/types/int,std/core/types/int,<(std/core/types/handled :: HX -> X)<(search :: HX)>>,(.hnd-search :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(search :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-search :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(search :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-search :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-search :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(search :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(search :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-pick, size);
+  };
+fun run // inline size: 7
+  = fn<<(std/core/types/div :: E)>>(n: std/core/types/int){
+    main/.handle-search<solution,<(std/core/types/div :: E)>,std/core/types/int>((std/core/int32(3)), (main/.Hnd-search<<(std/core/types/div :: E)>,std/core/types/int>((forall<a> std/core/hnd/clause-control0<a,<(std/core/types/div :: E)>,(.hnd-search :: (E, V) -> V),std/core/types/int>((fn<<(std/core/types/div :: E)>>(resume: (a) -> <(std/core/types/div :: E)> std/core/types/int){
+          0;
+        }))), (std/core/hnd/clause-control1<std/core/types/int,std/core/types/int,<(std/core/types/div :: E)>,(.hnd-search :: (E, V) -> V),std/core/types/int>((fn<<(std/core/types/div :: E)>>(size: std/core/types/int, resume0: (std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int){
+          (main/.lift577-run(resume0, size, 1, 0));
+        }))))), (fn<<(std/core/types/div :: E)>>(_w-l30-c12: solution){
+        1;
+      }), (fn<<(std/core/types/handled :: HX -> X)<(search :: HX)>,(std/core/types/div :: E)>>(){
+        (main/place(n, n));
+      }));
+  };

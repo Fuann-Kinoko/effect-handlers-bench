@@ -1,0 +1,181 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:emit` effect
+recursive type .hnd-emit <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-emit(fun-emit: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-emit :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (fun-emit : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-emit :: (E, V) -> V),(e :: E),a>) -> (.hnd-emit :: (E, V) -> V)<(e :: E),a>;
+};
+;
+// handlers for the `:read` effect
+recursive type .hnd-read <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-read(fun-read: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<(chr == 1 std/core/types/int),(.hnd-read :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (fun-read : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<(chr == 1 std/core/types/int),(.hnd-read :: (E, V) -> V),(e :: E),a>) -> (.hnd-read :: (E, V) -> V)<(e :: E),a>;
+};
+// handlers for the `:stop` effect
+recursive type .hnd-stop <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-stop(ctl-stop: forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-stop :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-stop : forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-stop :: (E, V) -> V),(e :: E),a>) -> (.hnd-stop :: (E, V) -> V)<(e :: E),a>;
+};
+// `:emit` effect
+type emit :: HX {
+  con Emit<(e :: E),a>((.hnd-emit :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-emit :: (E, V) -> V)<(e :: E),a>) -> (emit :: HX);
+};
+// `:read` effect
+type read :: HX {
+  con Read<(e :: E),a>((.hnd-read :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-read :: (E, V) -> V)<(e :: E),a>) -> (read :: HX);
+};
+// `:stop` effect
+type stop :: HX {
+  con Stop<(e :: E),a>((.hnd-stop :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-stop :: (E, V) -> V)<(e :: E),a>) -> (stop :: HX);
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// runtime tag for the `:emit` effect
+val .tag-emit : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-emit :: (E, V) -> V)>;
+// handler for the `:emit` effect
+fun .handle-emit : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-emit :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(emit :: HX)>|(e :: E)> a) -> (e :: E) b;
+// runtime tag for the `:read` effect
+val .tag-read : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-read :: (E, V) -> V)>;
+// handler for the `:read` effect
+fun .handle-read : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-read :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(read :: HX)>|(e :: E)> a) -> (e :: E) b;
+// runtime tag for the `:stop` effect
+val .tag-stop : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-stop :: (E, V) -> V)>;
+// handler for the `:stop` effect
+fun .handle-stop : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-stop :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `emit` operation out of the `:emit` effect handler
+fun .select-emit : forall<(e :: E),a> (^ hnd : (.hnd-emit :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-emit :: (E, V) -> V),(e :: E),a>;
+// select `read` operation out of the `:read` effect handler
+fun .select-read : forall<(e :: E),a> (^ hnd : (.hnd-read :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<chr,(.hnd-read :: (E, V) -> V),(e :: E),a>;
+// select `stop` operation out of the `:stop` effect handler
+fun .select-stop : forall<a,(e :: E),b> (^ hnd : (.hnd-stop :: (E, V) -> V)<(e :: E),b>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<a,(.hnd-stop :: (E, V) -> V),(e :: E),b>;
+fun dollar : () -> chr;
+fun newline : () -> chr;
+fun is-dollar : (c : chr) -> std/core/types/bool;
+fun is-newline : (c : chr) -> std/core/types/bool;
+// call `stop` operation of the `:stop` effect
+fun stop : forall<a> () -> <(std/core/types/handled :: HX -> X)<(stop :: HX)>> a;
+fun catch : forall<(e :: E)> (action : () -> <(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> ()) -> (e :: E) ();
+// call `emit` operation of the `:emit` effect
+fun emit : (e : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(emit :: HX)>> ();
+// call `read` operation of the `:read` effect
+fun read : () -> <(std/core/types/handled :: HX -> X)<(read :: HX)>> chr;
+// monadic lift
+fun .mlift1401-feed : forall<(h :: H),(e :: E)> (wild_0 : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> std/core/types/int;
+// monadic lift
+fun .mlift1402-feed : forall<(h :: H),(e :: E)> (j : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, .y.1353 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> chr;
+// monadic lift
+fun .mlift1403-feed : forall<(h :: H),(e :: E)> (i : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, j : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, wild_ : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> chr;
+// monadic lift
+fun .mlift1404-feed : forall<(h :: H),(e :: E)> (i : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, j : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, .y.1351 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> chr;
+// monadic lift
+fun .mlift1405-feed : forall<(h :: H),(e :: E)> (wild_1 : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> std/core/types/int;
+// monadic lift
+fun .mlift1406-feed : forall<(h :: H),(e :: E)> (j : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, .y.1355 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> chr;
+// monadic lift
+fun .mlift1407-feed : forall<(h :: H),(e :: E)> (i : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, j : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, .y.1350 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> chr;
+// monadic lift
+fun .mlift1408-feed : forall<(h :: H),(e :: E)> (i : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, j : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, n : std/core/types/int, .y.1347 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> chr;
+fun feed : forall<(e :: E)> (n : std/core/types/int, action : () -> <(std/core/types/handled :: HX -> X)<(read :: HX)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> ()) -> <(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> ();
+// monadic lift
+fun .mlift1409-parse : (wild_ : ()) -> <(std/core/types/handled :: HX -> X)<(emit :: HX)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>,(std/core/types/handled :: HX -> X)<(read :: HX)>,(std/core/types/div :: E)> 146;
+// monadic lift
+fun .mlift1410-parse : forall<a> (a : std/core/types/int, c : chr) -> <(std/core/types/handled :: HX -> X)<(read :: HX)>,(std/core/types/handled :: HX -> X)<(emit :: HX)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>,(std/core/types/div :: E)> a;
+fun parse : forall<a> (a : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(emit :: HX)>,(std/core/types/handled :: HX -> X)<(read :: HX)>,(std/core/types/handled :: HX -> X)<(stop :: HX)>> a;
+// monadic lift
+fun .mlift1411-sum : forall<(h :: H),(e :: E)> (e : std/core/types/int, s : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, .y.1374 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> ();
+// monadic lift
+fun .mlift1412-sum : forall<(h :: H),(e :: E)> (s : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, wild_ : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(emit :: HX)>|(e :: E)> std/core/types/int;
+fun sum : forall<(e :: E)> (action : () -> <(std/core/types/handled :: HX -> X)<(emit :: HX)>|(e :: E)> ()) -> (e :: E) std/core/types/int;
+// monadic lift
+fun .mlift1413-run : forall<(h :: H)> (s : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, wild_ : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(emit :: HX)>,(std/core/types/div :: E)> std/core/types/int;
+fun run : (n : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: E),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+inline borrow "^" fun .select-emit // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-emit :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-emit((fun-emit: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-emit :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-emit :: (E, V) -> V),(e :: E),a>) : (.hnd-emit :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-emit :: (E, V) -> V)<(e :: E),a>))
+         -> fun-emit;
+    });
+  };
+inline borrow "^" fun .select-read // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-read :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-read((fun-read: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<chr,(.hnd-read :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<chr,(.hnd-read :: (E, V) -> V),(e :: E),a>) : (.hnd-read :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-read :: (E, V) -> V)<(e :: E),a>))
+         -> fun-read;
+    });
+  };
+inline borrow "^" fun .select-stop // inline size: 0
+  = forall<a,(e :: E),b> fn(hnd: (.hnd-stop :: (E, V) -> V)<(e :: E),b>){
+    (match (hnd) {
+      ((.skip main/.Hnd-stop((ctl-stop: (forall<c> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<c,(.hnd-stop :: (E, V) -> V),(e :: E),b>)) : (forall<c> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<c,(.hnd-stop :: (E, V) -> V),(e :: E),b>)) : (.hnd-stop :: (E, V) -> V)<(e :: E),b> ) as .pat: ((.hnd-stop :: (E, V) -> V)<(e :: E),b>))
+         -> ctl-stop<a>;
+    });
+  };
+inline fun dollar // inline size: 0
+  = fn(){
+    36;
+  };
+inline fun newline // inline size: 0
+  = fn(){
+    10;
+  };
+fun is-dollar // inline size: 1
+  = fn(c: chr){
+    std/core/(==.1)(c, 36);
+  };
+fun is-newline // inline size: 1
+  = fn(c: chr){
+    std/core/(==.1)(c, 10);
+  };
+inline fun stop // inline size: 5
+  = forall<a> fn<<(std/core/types/handled :: HX -> X)<(stop :: HX)>>>(){
+    std/core/hnd/.perform0<a,<(std/core/types/handled :: HX -> X)<(stop :: HX)>>,(.hnd-stop :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(stop :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-stop :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(stop :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-stop :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-stop :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(stop :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(stop :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> main/.select-stop<a,(e :: E),b>));
+  };
+fun catch // inline size: 6
+  = forall<(e :: E)> fn<(e :: E)>(action: () -> <(std/core/types/handled :: HX -> X)<(stop :: HX)>|(e :: E)> ()){
+    main/.handle-stop<(),(e :: E),()>((std/core/types/.open<(std/core/types/(<>) :: E),(e :: E),(i : std/core/types/int) -> std/core/types/int32,(i : std/core/types/int) -> (e :: E) std/core/types/int32>(std/core/int32)(3)), (main/.Hnd-stop<(e :: E),()>((forall<a> std/core/types/.open<(std/core/types/(<>) :: E),(e :: E),(op : ((a) -> (e :: E) ()) -> (e :: E) ()) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<a,(.hnd-stop :: (E, V) -> V),(e :: E),()>,(op : ((a) -> (e :: E) ()) -> (e :: E) ()) -> (e :: E) (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<a,(.hnd-stop :: (E, V) -> V),(e :: E),()>>((std/core/hnd/clause-control0<a,(e :: E),(.hnd-stop :: (E, V) -> V),()>))((fn<(e :: E)>(resume: (a) -> (e :: E) ()){
+        std/core/types/();
+      }))))), (fn<(e :: E)>(.x: ()){
+        .x;
+      }), action);
+  };
+inline fun emit // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(emit :: HX)>>>(e: std/core/types/int){
+    std/core/hnd/.perform1<std/core/types/int,(),<(std/core/types/handled :: HX -> X)<(emit :: HX)>>,(.hnd-emit :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(emit :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-emit :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(emit :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-emit :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-emit :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(emit :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(emit :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-emit, e);
+  };
+inline fun read // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(read :: HX)>>>(){
+    std/core/hnd/.perform0<chr,<(std/core/types/handled :: HX -> X)<(read :: HX)>>,(.hnd-read :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(read :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-read :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(read :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-read :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-read :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(read :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(read :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-read);
+  };

@@ -1,0 +1,150 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:yield` effect
+recursive type .hnd-yield <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-yield(ctl-yield: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-yield :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-yield : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-yield :: (E, V) -> V),(e :: E),a>) -> (.hnd-yield :: (E, V) -> V)<(e :: E),a>;
+};
+recursive type generator {
+  con Empty : generator;
+  con Thunk(value: std/core/types/int, next: () -> <(std/core/types/div :: X)> generator) : (value : std/core/types/int, next : () -> <(std/core/types/div :: X)> generator) -> generator;
+};
+recursive type tree {
+  con Leaf : tree;
+  con Node(left: tree, value: std/core/types/int, right: tree) : (left : tree, value : std/core/types/int, right : tree) -> tree;
+};
+// `:yield` effect
+type yield :: HX {
+  con Yield<(e :: E),a>((.hnd-yield :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-yield :: (E, V) -> V)<(e :: E),a>) -> (yield :: HX);
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// Automatically generated. Tests for the `Empty` constructor of the `:generator` type.
+fun is-empty : (^ generator : generator) -> std/core/types/bool;
+// Automatically generated. Tests for the `Thunk` constructor of the `:generator` type.
+fun is-thunk : (^ generator : generator) -> std/core/types/bool;
+// Automatically generated. Tests for the `Leaf` constructor of the `:tree` type.
+fun is-leaf : (^ tree : tree) -> std/core/types/bool;
+// Automatically generated. Tests for the `Node` constructor of the `:tree` type.
+fun is-node : (^ tree : tree) -> std/core/types/bool;
+// runtime tag for the `:yield` effect
+val .tag-yield : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-yield :: (E, V) -> V)>;
+// handler for the `:yield` effect
+fun .handle-yield : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-yield :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `yield` operation out of the `:yield` effect handler
+fun .select-yield : forall<(e :: E),a> (^ hnd : (.hnd-yield :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-yield :: (E, V) -> V),(e :: E),a>;
+// call `yield` operation of the `:yield` effect
+fun yield : (x : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>> ();
+fun generate : (f : () -> <(std/core/types/div :: X),(std/core/types/handled :: HX -> X)<(yield :: HX)>> ()) -> <(std/core/types/div :: X)> generator;
+// monadic lift
+fun .mlift549-iterate : (r : tree, wild_0 : ()) -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>> ();
+// monadic lift
+fun .mlift550-iterate : (r : tree, v : std/core/types/int, wild_ : ()) -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>> ();
+fun iterate : (t : tree) -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>> ();
+fun make : (n : std/core/types/int) -> <(std/core/types/div :: E)> tree;
+fun sum : (a : std/core/types/int, g : generator) -> <(std/core/types/div :: X)> std/core/types/int;
+fun run : (n : std/core/types/int) -> <(std/core/types/div :: X)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: X),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+inline borrow "^" fun is-empty // inline size: 1
+  = fn(generator: generator){
+    match (generator) {
+      ((main/Empty() : generator ) as .pat: generator)
+         -> std/core/types/True;
+      ((.skip main/Thunk((.pat1: std/core/types/int) : std/core/types/int, (.pat2: () -> <(std/core/types/div :: X)> generator) : () -> <(std/core/types/div :: X)> generator) : generator ) as .pat0: generator)
+         -> std/core/types/False;
+    };
+  };
+inline borrow "^" fun is-thunk // inline size: 1
+  = fn(generator: generator){
+    match (generator) {
+      ((main/Thunk((.pat0: std/core/types/int) : std/core/types/int, (.pat1: () -> <(std/core/types/div :: X)> generator) : () -> <(std/core/types/div :: X)> generator) : generator ) as .pat: generator)
+         -> std/core/types/True;
+      ((.skip main/Empty() : generator ) as .pat2: generator)
+         -> std/core/types/False;
+    };
+  };
+inline borrow "^" fun is-leaf // inline size: 1
+  = fn(tree: tree){
+    match (tree) {
+      ((main/Leaf() : tree ) as .pat: tree)
+         -> std/core/types/True;
+      ((.skip main/Node((.pat1: tree) : tree, (.pat2: std/core/types/int) : std/core/types/int, (.pat3: tree) : tree) : tree ) as .pat0: tree)
+         -> std/core/types/False;
+    };
+  };
+inline borrow "^" fun is-node // inline size: 1
+  = fn(tree: tree){
+    match (tree) {
+      ((main/Node((.pat0: tree) : tree, (.pat1: std/core/types/int) : std/core/types/int, (.pat2: tree) : tree) : tree ) as .pat: tree)
+         -> std/core/types/True;
+      ((.skip main/Leaf() : tree ) as .pat3: tree)
+         -> std/core/types/False;
+    };
+  };
+inline borrow "^" fun .select-yield // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-yield :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-yield((ctl-yield: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-yield :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-yield :: (E, V) -> V),(e :: E),a>) : (.hnd-yield :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-yield :: (E, V) -> V)<(e :: E),a>))
+         -> ctl-yield;
+    });
+  };
+inline fun yield // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(yield :: HX)>>>(x: std/core/types/int){
+    std/core/hnd/.perform1<std/core/types/int,(),<(std/core/types/handled :: HX -> X)<(yield :: HX)>>,(.hnd-yield :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(yield :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-yield :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-yield :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-yield :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(yield :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-yield, x);
+  };
+fun generate // inline size: 6
+  = fn<<(std/core/types/div :: X)>>(f: () -> <(std/core/types/handled :: HX -> X)<(yield :: HX)>,(std/core/types/div :: X)> ()){
+    main/.handle-yield<(),<(std/core/types/div :: X)>,generator>((std/core/int32(3)), (main/.Hnd-yield<<(std/core/types/div :: X)>,generator>((std/core/hnd/clause-control1<std/core/types/int,(),<(std/core/types/div :: X)>,(.hnd-yield :: (E, V) -> V),generator>((fn<<(std/core/types/div :: X)>>(x: std/core/types/int, resume: (()) -> <(std/core/types/div :: X)> generator){
+        (main/Thunk(x, (fn<<(std/core/types/div :: X)>>(){
+            (resume(std/core/types/()));
+          })));
+      }))))), (fn<<(std/core/types/div :: X)>>(_w-l33-c12: ()){
+        main/Empty;
+      }), f);
+  };
+fun run // inline size: 10
+  = fn<<(std/core/types/div :: X)>>(n: std/core/types/int){
+    main/sum(0, (main/.handle-yield<(),<(std/core/types/div :: X)>,generator>((std/core/int32(3)), (main/.Hnd-yield<<(std/core/types/div :: X)>,generator>((std/core/hnd/clause-control1<std/core/types/int,(),<(std/core/types/div :: X)>,(.hnd-yield :: (E, V) -> V),generator>((fn<<(std/core/types/div :: X)>>(x: std/core/types/int, resume: (()) -> <(std/core/types/div :: X)> generator){
+          (main/Thunk(x, (fn<<(std/core/types/div :: X)>>(){
+              (resume(std/core/types/()));
+            })));
+        }))))), (fn<<(std/core/types/div :: X)>>(_w-l33-c12: ()){
+          main/Empty;
+        }), (fn<<(std/core/types/div :: X),(std/core/types/handled :: HX -> X)<(yield :: HX)>>>(){
+          (main/iterate((std/core/types/.open<<(std/core/types/div :: E)>,<(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(yield :: HX)>>,(n : std/core/types/int) -> <(std/core/types/div :: E)> tree,(n : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(yield :: HX)>> tree>(main/make)(n))));
+        }))));
+  };

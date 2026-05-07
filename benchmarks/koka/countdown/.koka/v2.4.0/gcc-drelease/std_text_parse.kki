@@ -1,0 +1,474 @@
+/* Parser combinators
+*/
+module interface std/text/parse
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+// An alias for the empty effect.
+local alias std/core/total :: E = (std/core/types/(<>) :: E) = 1;
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:parse` effect
+pub recursive type .hnd-parse <(e :: E),a> :: (E, V) -> V {
+  pub con .Hnd-parse(fun-current-input: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),a>, ctl-fail: forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,b,(.hnd-parse :: (E, V) -> V),(e :: E),a>, ctl-pick: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),a>, fun-satisfy: forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> ((std/core/total :: E) == 1 (std/core/types/(<>) :: E)) (std/core/types/maybe :: V -> V)<(b, std/core/sslice)>,(std/core/types/maybe :: V -> V)<b>,(.hnd-parse :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (fun-current-input : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),a>, ctl-fail : forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,b,(.hnd-parse :: (E, V) -> V),(e :: E),a>, ctl-pick : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),a>, fun-satisfy : forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> ((std/core/total :: E) == 1 (std/core/types/(<>) :: E)) (std/core/types/maybe :: V -> V)<(b, std/core/sslice)>,(std/core/types/maybe :: V -> V)<b>,(.hnd-parse :: (E, V) -> V),(e :: E),a>) -> (.hnd-parse :: (E, V) -> V)<(e :: E),a>;
+};
+// `:parse` effect
+pub type parse :: HX {
+  con Parse<(e :: E),a>((.hnd-parse :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-parse :: (E, V) -> V)<(e :: E),a>) -> (parse :: HX);
+};
+pub type parse-error <a> :: V -> V {
+  pub con ParseOk(result: a, rest: std/core/sslice) : forall<a> (result : a, rest : std/core/sslice) -> (parse-error :: V -> V)<a>;
+  pub con ParseError(msg: std/core/types/string, rest: std/core/sslice) : forall<a> (msg : std/core/types/string, rest : std/core/sslice) -> (parse-error :: V -> V)<a>;
+};
+pub alias parser<(e :: E),a> :: (E, V) -> V = () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a = 1;
+ 
+//------------------------------
+//#kki: declarations
+ 
+// Automatically generated. Retrieves the `rest` constructor field of the `:parse-error` type.
+pub fun rest : forall<a> (^ .this : (parse-error :: V -> V)<a>) -> std/core/sslice;
+// Automatically generated. Tests for the `ParseOk` constructor of the `:parse-error` type.
+pub fun is-parseOk : forall<a> (^ parse-error : (parse-error :: V -> V)<a>) -> std/core/types/bool;
+// Automatically generated. Tests for the `ParseError` constructor of the `:parse-error` type.
+pub fun is-parseError : forall<a> (^ parse-error : (parse-error :: V -> V)<a>) -> std/core/types/bool;
+// runtime tag for the `:parse` effect
+pub val .tag-parse : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>;
+// handler for the `:parse` effect
+pub fun .handle-parse : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-parse :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `current-input` operation out of the `:parse` effect handler
+pub fun .select-current-input : forall<(e :: E),a> (^ hnd : (.hnd-parse :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),a>;
+// select `fail` operation out of the `:parse` effect handler
+pub fun .select-fail : forall<a,(e :: E),b> (^ hnd : (.hnd-parse :: (E, V) -> V)<(e :: E),b>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,a,(.hnd-parse :: (E, V) -> V),(e :: E),b>;
+// select `pick` operation out of the `:parse` effect handler
+pub fun .select-pick : forall<(e :: E),a> (^ hnd : (.hnd-parse :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),a>;
+// select `satisfy` operation out of the `:parse` effect handler
+pub fun .select-satisfy : forall<a,(e :: E),b> (^ hnd : (.hnd-parse :: (E, V) -> V)<(e :: E),b>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>,(std/core/types/maybe :: V -> V)<a>,(.hnd-parse :: (E, V) -> V),(e :: E),b>;
+pub fun either : forall<a> (perr : (parse-error :: V -> V)<a>) -> (std/core/types/either :: (V, V) -> V)<std/core/types/string,a>;
+// call `fail` operation of the `:parse` effect
+pub fun fail : forall<a> (msg : std/core/types/string) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> a;
+// call `satisfy` operation of the `:parse` effect
+pub fun satisfy : forall<a> (pred : (std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/types/maybe :: V -> V)<a>;
+// monadic lift
+fun .mlift2671-satisfy-fail : forall<a> (msg : std/core/types/string, .y.2523 : (std/core/types/maybe :: V -> V)<a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> a;
+pub fun satisfy-fail : forall<a> (msg : std/core/types/string, pred : (std/core/sslice) -> (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> a;
+// monadic lift
+fun .mlift2672-char-is : (msg : std/core/types/string, .y.2526 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun char-is : (msg : std/core/types/string, pred : (std/core/types/char) -> std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2673-alpha : (.y.2529 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun alpha : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2674-alpha-num : (.y.2532 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun alpha-num : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2675-char : (msg.2264 : std/core/types/string, .y.2535 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun char : (c : std/core/types/char) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+fun next-while0 : (slice : std/core/sslice, pred : (std/core/types/char) -> std/core/types/bool, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2676-chars-are : (msg : std/core/types/string, .y.2538 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/list :: V -> V)<std/core/types/char>;
+pub fun chars-are : (msg : std/core/types/string, pred : (std/core/types/char) -> std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/list :: V -> V)<std/core/types/char>;
+// call `pick` operation of the `:parse` effect
+pub fun pick : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/bool;
+// monadic lift
+fun .mlift2677-choose : forall<a,(e :: E)> (p0 : (parser :: (E, V) -> V)<(e :: E),a>, pp : (std/core/list :: V -> V)<(parser :: (E, V) -> V)<(e :: E),a>>, .y.2545 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+pub fun choose : forall<a,(e :: E)> (ps : (std/core/list :: V -> V)<(parser :: (E, V) -> V)<(e :: E),a>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+// monadic lift
+fun .mlift2678-count-acc : forall<a,(e :: E)> (acc : (std/core/list :: V -> V)<a>, n : std/core/types/int, p : (parser :: (E, V) -> V)<(e :: E),a>, x : a) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+fun count-acc : forall<a,(e :: E)> (n : std/core/types/int, acc : (std/core/list :: V -> V)<a>, p : (parser :: (E, V) -> V)<(e :: E),a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+pub fun count : forall<a,(e :: E)> (n : std/core/types/int, p : (parser :: (E, V) -> V)<(e :: E),a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+// call `current-input` operation of the `:parse` effect
+pub fun current-input : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/sslice;
+// monadic lift
+fun .mlift2679-digit : (.c.2557 : std/core/types/char) -> std/core/types/int;
+// monadic lift
+fun .mlift2680-digit : (.y.2555 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/int;
+pub fun digit : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/int;
+// lifted local: digits, .spec.2501
+// specialized: std/text/parse/next-while0, on parameters pred, using:
+// pred = std/core/is-digit
+fun .lift2509-digits : (slice0 : std/core/sslice, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2681-digits : (.y.2558 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun digits : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+// monadic lift
+fun .mlift2682-op : forall<a,(e :: E)> (p1 : (parser :: (E, V) -> V)<(e :: E),a>, p2 : (parser :: (E, V) -> V)<(e :: E),a>, .y.2562 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+pub fun (||) : forall<a,(e :: E)> (p1 : (parser :: (E, V) -> V)<(e :: E),a>, p2 : (parser :: (E, V) -> V)<(e :: E),a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+// monadic lift
+fun .mlift2683-optional : forall<a,(e :: E)> (default : a, p : (parser :: (E, V) -> V)<(e :: E),a>, .y.2567 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+pub fun optional : forall<a,(e :: E)> (default : a, p : (parser :: (E, V) -> V)<(e :: E),a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+// lifted local: digits0, .spec.2502
+// specialized: std/text/parse/next-while0, on parameters pred, using:
+// pred = std/core/is-digit
+fun .lift2510-digits0 : (slice0 : std/core/sslice, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2684-digits0 : (.y.2571 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+// monadic lift
+fun .mlift2685-digits0 : (.y.2570 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun digits0 : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+// monadic lift
+fun .mlift2686-eof : (.y.2575 : (std/core/types/maybe :: V -> V)<()>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> ();
+pub fun eof : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> ();
+// lifted local: hex-digits, .spec.2503
+// specialized: std/text/parse/next-while0, on parameters pred, using:
+// pred = std/core/is-hex-digit
+fun .lift2511-hex-digits : (slice0 : std/core/sslice, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2687-hex-digits : (.y.2578 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun hex-digits : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+// monadic lift
+fun .mlift2688-many-acc : forall<a,(e :: E)> (acc : (std/core/list :: V -> V)<a>, p : (parser :: (E, V) -> V)<(e :: E),a>, x : a) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+// monadic lift
+fun .mlift2689-many-acc : forall<a,(e :: E)> (acc : (std/core/list :: V -> V)<a>, p : (parser :: (E, V) -> V)<(e :: E),a>, .y.2582 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+fun many-acc : forall<a,(e :: E)> (p : (parser :: (E, V) -> V)<(e :: E),a>, acc : (std/core/list :: V -> V)<a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+pub fun many : forall<a,(e :: E)> (p : (parser :: (E, V) -> V)<(e :: E),a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+// monadic lift
+fun .mlift2690-many1 : forall<a,(e :: E)> (.y.2587 : a, .y.2588 : (std/core/list :: V -> V)<a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+// monadic lift
+fun .mlift2691-many1 : forall<a,(e :: E)> (p : (parser :: (E, V) -> V)<(e :: E),a>, .y.2587 : a) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+pub fun many1 : forall<a,(e :: E)> (p : (parser :: (E, V) -> V)<(e :: E),a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>;
+pub fun maybe : forall<a> (perr : (parse-error :: V -> V)<a>) -> (std/core/types/maybe :: V -> V)<a>;
+fun next-match : (slice : std/core/sslice, cs : (std/core/list :: V -> V)<std/core/types/char>) -> (std/core/types/maybe :: V -> V)<std/core/sslice>;
+// monadic lift
+fun .mlift2692-no-digit : (.y.2589 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun no-digit : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2693-none-of : (.y.2592 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun none-of : (chars : std/core/types/string) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// lifted local: none-of-many1, .spec.2504
+// specialized: std/text/parse/next-while0, on parameters pred, using:
+// pred = fn(c: char){
+//   val b.2330 : bool
+//         = std/core/contains(chars, (std/core/string(c)));
+//   match (b.2330) {
+//     ((std/core/types/True() : bool ) as .pat9: bool)
+//        -> std/core/types/False;
+//     ((.skip std/core/types/False() : bool ) as .pat01: bool)
+//        -> std/core/types/True;
+//   };
+// }
+fun .lift2512-none-of-many1 : (chars : std/core/types/string, slice0 : std/core/sslice, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2694-none-of-many1 : (.y.2595 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun none-of-many1 : (chars : std/core/types/string) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+// monadic lift
+fun .mlift2695-one-of : (chars : std/core/types/string, .y.2598 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun one-of : (chars : std/core/types/string) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2696-one-of-or : (chars : std/core/types/string, default : std/core/types/char, .y.2601 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun one-of-or : (chars : std/core/types/string, default : std/core/types/char) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2697-parse : forall<(h :: H),a,(e :: E)> (msg : std/core/types/string, .y.2605 : std/core/sslice) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>;
+// monadic lift
+fun .mlift2698-parse : forall<(h :: H),a,(e :: E)> (err1 : (parse-error :: V -> V)<a>, .y.2609 : (parse-error :: V -> V)<a>) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>;
+// monadic lift
+fun .mlift2699-parse : forall<(h :: H),a,(e :: E)> (err1 : (parse-error :: V -> V)<a>, resume : (std/core/types/bool) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>, wild_ : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>;
+// monadic lift
+fun .mlift2700-parse : forall<(h :: H),a,(e :: E)> (input : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/sslice>, resume : (std/core/types/bool) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>, save : std/core/sslice, .y.2607 : (parse-error :: V -> V)<a>) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>;
+// monadic lift
+fun .mlift2701-parse : forall<(h :: H),a,(e :: E)> (input : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/sslice>, resume : (std/core/types/bool) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>, save : std/core/sslice) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>;
+// monadic lift
+fun .mlift2702-parse : forall<a,(h :: H),(e :: E)> (x : a, wild_0 : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (std/core/types/maybe :: V -> V)<a>;
+// monadic lift
+fun .mlift2703-parse : forall<a,(h :: H),(e :: E)> (input : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/sslice>, pred : (std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>, inp : std/core/sslice) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (std/core/types/maybe :: V -> V)<a>;
+// monadic lift
+fun .mlift2704-parse : forall<(h :: H),a,(e :: E)> (x0 : a, .y.2614 : std/core/sslice) -> <(std/core/types/local :: H -> X)<(h :: H)>|(e :: E)> (parse-error :: V -> V)<a>;
+pub fun parse : forall<a,(e :: E)> (input0 : std/core/sslice, p : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a) -> (e :: E) (parse-error :: V -> V)<a>;
+// monadic lift
+fun .mlift2705-parse-eof : (.y.2620 : (std/core/types/maybe :: V -> V)<()>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> ();
+// monadic lift
+fun .mlift2706-parse-eof : forall<a,(e :: E)> (x : a, wild_ : ()) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+// monadic lift
+fun .mlift2707-parse-eof : forall<a,(e :: E)> (x : a) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a;
+pub fun parse-eof : forall<a,(e :: E)> (input : std/core/sslice, p : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> a) -> (e :: E) (parse-error :: V -> V)<a>;
+// lifted local: pnat, .spec.2506
+// specialized: std/text/parse/next-while0, on parameters pred, using:
+// pred = std/core/is-digit
+fun .lift2513-pnat : (slice0 : std/core/sslice, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2708-pnat : (.c.2627 : (std/core/list :: V -> V)<std/core/types/char>) -> std/core/types/int;
+// monadic lift
+fun .mlift2709-pnat : (.y.2625 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/int;
+pub fun pnat : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/int;
+// monadic lift
+fun .mlift2710-sign : (.y.2629 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2711-sign : (.c.2632 : std/core/types/char) -> std/core/types/bool;
+// monadic lift
+fun .mlift2712-sign : (.y.2628 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/bool;
+pub fun sign : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/bool;
+// monadic lift
+fun .mlift2713-pint : (neg : std/core/types/bool, i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/int;
+// monadic lift
+fun .mlift2714-pint : (.y.2634 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// monadic lift
+fun .mlift2715-pint : (.c.2637 : std/core/types/char) -> std/core/types/int;
+// monadic lift
+fun .mlift2716-pint : (.y.2633 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/int;
+pub fun pint : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/int;
+// monadic lift
+fun .mlift2717-pstring : (s : std/core/types/string, .y.2640 : (std/core/types/maybe :: V -> V)<std/core/types/string>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun pstring : (s : std/core/types/string) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun starts-with : forall<a> (s : std/core/types/string, p : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> a) -> (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>;
+// monadic lift
+fun .mlift2718-white : (.y.2643 : (std/core/types/maybe :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+pub fun white : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/char;
+// lifted local: whitespace, .spec.2507
+// specialized: std/text/parse/next-while0, on parameters pred, using:
+// pred = std/core/is-white
+fun .lift2514-whitespace : (slice0 : std/core/sslice, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2719-whitespace : (.y.2646 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun whitespace : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+// lifted local: whitespace0, .spec.2508
+// specialized: std/text/parse/next-while0, on parameters pred, using:
+// pred = std/core/is-white
+fun .lift2515-whitespace0 : (slice0 : std/core/sslice, acc : (std/core/list :: V -> V)<std/core/types/char>) -> ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice);
+// monadic lift
+fun .mlift2720-whitespace0 : (.y.2650 : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+// monadic lift
+fun .mlift2721-whitespace0 : (.y.2649 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+pub fun whitespace0 : () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string;
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+specialize "_*" fun chars-are // inline size: 1
+  = fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(msg: std/core/types/string, pred: (std/core/types/char) -> std/core/types/bool){
+    match ((std/core/hnd/.perform1<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice)>,(std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),a> std/text/parse/.select-satisfy<(std/core/list :: V -> V)<std/core/types/char>,(e :: E),a>), (fn(slice: std/core/sslice){
+        (match ((std/text/parse/next-while0(slice, pred, (std/core/Nil<std/core/types/char>)))) {
+          ((.skip std/core/types/(,)(((std/core/Nil() : (std/core/list :: V -> V)<std/core/types/char> ) as .pat00: (std/core/list :: V -> V)<std/core/types/char>) : (std/core/list :: V -> V)<std/core/types/char>, ((.skip std/core/Sslice((.pat2: std/core/types/string) : std/core/types/string, (.pat3: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat4: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat10: std/core/sslice) : std/core/sslice) : ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice) ) as .pat1: ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice))
+             -> std/core/types/Nothing<((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice)>;
+          ((.skip std/core/types/(,)((xs: (std/core/list :: V -> V)<std/core/types/char>) : (std/core/list :: V -> V)<std/core/types/char>, ((.skip std/core/Sslice((.pat6: std/core/types/string) : std/core/types/string, (.pat7: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat8: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as rest0: std/core/sslice) : std/core/sslice) : ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice) ) as .pat5: ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice))
+             -> std/core/types/Just<((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice)>((std/core/types/(,)<(std/core/list :: V -> V)<std/core/types/char>,std/core/sslice>(xs, rest0)));
+        });
+      })))) {
+      ((std/core/types/Nothing() : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>> ) as .pat: ((std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>))
+         -> std/core/hnd/.perform1<std/core/types/string,(std/core/list :: V -> V)<std/core/types/char>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),a> std/text/parse/.select-fail<(std/core/list :: V -> V)<std/core/types/char>,(e :: E),a>), msg);
+      ((.skip std/core/types/Just((x: (std/core/list :: V -> V)<std/core/types/char>) : (std/core/list :: V -> V)<std/core/types/char>) : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>> ) as .pat0: ((std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>))
+         -> x;
+    };
+  };
+specialize "_*" fun count // inline size: 1
+  = forall<a,(e :: E)> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>>(n: std/core/types/int, p: (parser :: (E, V) -> V)<(e :: E),a>){
+    std/text/parse/count-acc<a,(e :: E)>(n, (std/core/Nil<a>), p);
+  };
+recursive specialize "__*" fun count-acc // inline size: 13
+  = forall<a,(e :: E)> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>>(n: std/core/types/int, acc: (std/core/list :: V -> V)<a>, p: (parser :: (E, V) -> V)<(e :: E),a>){
+    (match ((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>,(x : std/core/types/int, y : std/core/types/int) -> std/core/types/bool,(x : std/core/types/int, y : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> std/core/types/bool>(std/core/(<=.1))(n, 0))) {
+      ((std/core/types/True() : std/core/types/bool ) as .pat: std/core/types/bool)
+         -> std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>,(xs : (std/core/list :: V -> V)<a>) -> (std/core/list :: V -> V)<a>,(xs : (std/core/list :: V -> V)<a>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> (std/core/list :: V -> V)<a>>((std/core/reverse<a>))(acc);
+      ((.skip std/core/types/False() : std/core/types/bool ) as .pat0: std/core/types/bool)
+         -> val x : a
+                  = p();
+        std/text/parse/count-acc<a,(e :: E)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>,(x : std/core/types/int) -> std/core/types/int,(x : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> std/core/types/int>((std/core/types/unsafe-decreasing<std/core/types/int>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>,(x : std/core/types/int, y : std/core/types/int) -> std/core/types/int,(x : std/core/types/int, y : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> std/core/types/int>((fn(x0: std/core/types/int, y: std/core/types/int){
+            (std/core/int-sub(x0, y));
+          }))(n, 1)))), (std/core/Cons<a>(x, acc)), p);
+    });
+  };
+recursive specialize "_*_" fun next-while0 // inline size: 8
+  = fn(slice: std/core/sslice, pred: (std/core/types/char) -> std/core/types/bool, acc: (std/core/list :: V -> V)<std/core/types/char>){
+    match ((std/core/next(slice))) {
+      ((std/core/types/Just(((std/core/types/(,)((c: std/core/types/char) : std/core/types/char, (rest0: std/core/sslice) : std/core/sslice) : (std/core/types/char, std/core/sslice) ) as .pat0: (std/core/types/char, std/core/sslice)) : (std/core/types/char, std/core/sslice)) : (std/core/types/maybe :: V -> V)<(std/core/types/char, std/core/sslice)> ) as .pat: ((std/core/types/maybe :: V -> V)<(std/core/types/char, std/core/sslice)>))
+         | pred(c) -> std/text/parse/next-while0((std/core/types/unsafe-decreasing<std/core/sslice>(rest0)), pred, (std/core/Cons<std/core/types/char>(c, acc)));
+      (.pat1: ((std/core/types/maybe :: V -> V)<(std/core/types/char, std/core/sslice)>))
+         -> std/core/types/(,)<(std/core/list :: V -> V)<std/core/types/char>,std/core/sslice>((std/core/.lift17288-reverse<std/core/types/char>((std/core/Nil<std/core/types/char>), acc)), slice);
+    };
+  };
+specialize "*" fun none-of-many1 // inline size: 1
+  = fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(chars: std/core/types/string){
+    std/core/types/.open<(std/core/total :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(cs : (std/core/list :: V -> V)<std/core/types/char>) -> (std/core/total :: E) std/core/types/string,(cs : (std/core/list :: V -> V)<std/core/types/char>) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/string>(std/core/string.2)((match ((std/core/hnd/.perform1<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice)>,(std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),a> std/text/parse/.select-satisfy<(std/core/list :: V -> V)<std/core/types/char>,(e :: E),a>), (fn(slice: std/core/sslice){
+        (match ((std/text/parse/next-while0(slice, (fn(c: std/core/types/char){
+            val b.2330 : std/core/types/bool
+                  = (std/core/contains(chars, (std/core/string(c))));
+            (match (b.2330) {
+              ((std/core/types/True() : std/core/types/bool ) as .pat9: std/core/types/bool)
+                 -> std/core/types/False;
+              ((.skip std/core/types/False() : std/core/types/bool ) as .pat01: std/core/types/bool)
+                 -> std/core/types/True;
+            });
+          }), (std/core/Nil<std/core/types/char>)))) {
+          ((.skip std/core/types/(,)(((std/core/Nil() : (std/core/list :: V -> V)<std/core/types/char> ) as .pat00: (std/core/list :: V -> V)<std/core/types/char>) : (std/core/list :: V -> V)<std/core/types/char>, ((.skip std/core/Sslice((.pat2: std/core/types/string) : std/core/types/string, (.pat3: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat4: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat10: std/core/sslice) : std/core/sslice) : ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice) ) as .pat1: ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice))
+             -> std/core/types/Nothing<((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice)>;
+          ((.skip std/core/types/(,)((xs: (std/core/list :: V -> V)<std/core/types/char>) : (std/core/list :: V -> V)<std/core/types/char>, ((.skip std/core/Sslice((.pat6: std/core/types/string) : std/core/types/string, (.pat7: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat8: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as rest0: std/core/sslice) : std/core/sslice) : ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice) ) as .pat5: ((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice))
+             -> std/core/types/Just<((std/core/list :: V -> V)<std/core/types/char>, std/core/sslice)>((std/core/types/(,)<(std/core/list :: V -> V)<std/core/types/char>,std/core/sslice>(xs, rest0)));
+        });
+      })))) {
+      ((std/core/types/Nothing() : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>> ) as .pat: ((std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>))
+         -> std/core/hnd/.perform1<std/core/types/string,(std/core/list :: V -> V)<std/core/types/char>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),a> std/text/parse/.select-fail<(std/core/list :: V -> V)<std/core/types/char>,(e :: E),a>), "");
+      ((.skip std/core/types/Just((x: (std/core/list :: V -> V)<std/core/types/char>) : (std/core/list :: V -> V)<std/core/types/char>) : (std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>> ) as .pat0: ((std/core/types/maybe :: V -> V)<(std/core/list :: V -> V)<std/core/types/char>>))
+         -> x;
+    }));
+  };
+inline borrow "^" fun rest // inline size: 1
+  = forall<a> fn(.this: (parse-error :: V -> V)<a>){
+    (match (.this) {
+      ((std/text/parse/ParseOk((.pat0: a) : a, ((.skip std/core/Sslice((.pat1: std/core/types/string) : std/core/types/string, (.pat2: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat3: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .x: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat: ((parse-error :: V -> V)<a>))
+         -> .x;
+      ((.skip std/text/parse/ParseError((.pat5: std/core/types/string) : std/core/types/string, ((.skip std/core/Sslice((.pat6: std/core/types/string) : std/core/types/string, (.pat7: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat8: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .x0: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat4: ((parse-error :: V -> V)<a>))
+         -> .x0;
+    });
+  };
+inline borrow "^" fun is-parseOk // inline size: 1
+  = forall<a> fn(parse-error: (parse-error :: V -> V)<a>){
+    (match (parse-error) {
+      ((std/text/parse/ParseOk((.pat0: a) : a, ((.skip std/core/Sslice((.pat2: std/core/types/string) : std/core/types/string, (.pat3: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat4: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat1: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat: ((parse-error :: V -> V)<a>))
+         -> std/core/types/True;
+      (.pat5: ((parse-error :: V -> V)<a>))
+         -> std/core/types/False;
+    });
+  };
+inline borrow "^" fun is-parseError // inline size: 1
+  = forall<a> fn(parse-error: (parse-error :: V -> V)<a>){
+    (match (parse-error) {
+      ((std/text/parse/ParseError((.pat0: std/core/types/string) : std/core/types/string, ((.skip std/core/Sslice((.pat2: std/core/types/string) : std/core/types/string, (.pat3: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat4: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat1: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat: ((parse-error :: V -> V)<a>))
+         -> std/core/types/True;
+      (.pat5: ((parse-error :: V -> V)<a>))
+         -> std/core/types/False;
+    });
+  };
+inline borrow "^" fun .select-current-input // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-parse :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip std/text/parse/.Hnd-parse((fun-current-input: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),a>, (.pat0: forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,b,(.hnd-parse :: (E, V) -> V),(e :: E),a>) : forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,b,(.hnd-parse :: (E, V) -> V),(e :: E),a>, (.pat1: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),a>, (.pat2: (forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(b, std/core/sslice)>,(std/core/types/maybe :: V -> V)<b>,(.hnd-parse :: (E, V) -> V),(e :: E),a>)) : (forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(b, std/core/sslice)>,(std/core/types/maybe :: V -> V)<b>,(.hnd-parse :: (E, V) -> V),(e :: E),a>)) : (.hnd-parse :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-parse :: (E, V) -> V)<(e :: E),a>))
+         -> fun-current-input;
+    });
+  };
+inline borrow "^" fun .select-fail // inline size: 0
+  = forall<a,(e :: E),b> fn(hnd: (.hnd-parse :: (E, V) -> V)<(e :: E),b>){
+    (match (hnd) {
+      ((.skip std/text/parse/.Hnd-parse((.pat0: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),b>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),b>, (ctl-fail: forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,c,(.hnd-parse :: (E, V) -> V),(e :: E),b>) : forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,c,(.hnd-parse :: (E, V) -> V),(e :: E),b>, (.pat1: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),b>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),b>, (.pat2: (forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(c, std/core/sslice)>,(std/core/types/maybe :: V -> V)<c>,(.hnd-parse :: (E, V) -> V),(e :: E),b>)) : (forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(c, std/core/sslice)>,(std/core/types/maybe :: V -> V)<c>,(.hnd-parse :: (E, V) -> V),(e :: E),b>)) : (.hnd-parse :: (E, V) -> V)<(e :: E),b> ) as .pat: ((.hnd-parse :: (E, V) -> V)<(e :: E),b>))
+         -> ctl-fail<a>;
+    });
+  };
+inline borrow "^" fun .select-pick // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-parse :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip std/text/parse/.Hnd-parse((.pat0: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),a>, (.pat1: forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,b,(.hnd-parse :: (E, V) -> V),(e :: E),a>) : forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,b,(.hnd-parse :: (E, V) -> V),(e :: E),a>, (ctl-pick: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),a>, (.pat2: (forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(b, std/core/sslice)>,(std/core/types/maybe :: V -> V)<b>,(.hnd-parse :: (E, V) -> V),(e :: E),a>)) : (forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(b, std/core/sslice)>,(std/core/types/maybe :: V -> V)<b>,(.hnd-parse :: (E, V) -> V),(e :: E),a>)) : (.hnd-parse :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-parse :: (E, V) -> V)<(e :: E),a>))
+         -> ctl-pick;
+    });
+  };
+inline borrow "^" fun .select-satisfy // inline size: 0
+  = forall<a,(e :: E),b> fn(hnd: (.hnd-parse :: (E, V) -> V)<(e :: E),b>){
+    (match (hnd) {
+      ((.skip std/text/parse/.Hnd-parse((.pat0: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),b>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/sslice,(.hnd-parse :: (E, V) -> V),(e :: E),b>, (.pat1: forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,c,(.hnd-parse :: (E, V) -> V),(e :: E),b>) : forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/string,c,(.hnd-parse :: (E, V) -> V),(e :: E),b>, (.pat2: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),b>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-parse :: (E, V) -> V),(e :: E),b>, (fun-satisfy: (forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(c, std/core/sslice)>,(std/core/types/maybe :: V -> V)<c>,(.hnd-parse :: (E, V) -> V),(e :: E),b>)) : (forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(c, std/core/sslice)>,(std/core/types/maybe :: V -> V)<c>,(.hnd-parse :: (E, V) -> V),(e :: E),b>)) : (.hnd-parse :: (E, V) -> V)<(e :: E),b> ) as .pat: ((.hnd-parse :: (E, V) -> V)<(e :: E),b>))
+         -> fun-satisfy<a>;
+    });
+  };
+fun either // inline size: 3
+  = forall<a> fn(perr: (parse-error :: V -> V)<a>){
+    (match (perr) {
+      ((std/text/parse/ParseOk((x: a) : a, ((.skip std/core/Sslice((.pat1: std/core/types/string) : std/core/types/string, (.pat2: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat3: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat0: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat: ((parse-error :: V -> V)<a>))
+         -> std/core/types/Right<std/core/types/string,a>(x);
+      ((.skip std/text/parse/ParseError((msg: std/core/types/string) : std/core/types/string, ((.skip std/core/Sslice((.pat6: std/core/types/string) : std/core/types/string, (.pat7: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat8: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat5: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat4: ((parse-error :: V -> V)<a>))
+         -> std/core/types/Left<std/core/types/string,a>(msg);
+    });
+  };
+inline fun fail // inline size: 5
+  = forall<a> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(msg: std/core/types/string){
+    std/core/hnd/.perform1<std/core/types/string,a,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> std/text/parse/.select-fail<a,(e :: E),b>), msg);
+  };
+inline fun satisfy // inline size: 5
+  = forall<a> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(pred: (std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>){
+    std/core/hnd/.perform1<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>,(std/core/types/maybe :: V -> V)<a>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> std/text/parse/.select-satisfy<a,(e :: E),b>), pred);
+  };
+fun satisfy-fail // inline size: 11
+  = forall<a> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(msg: std/core/types/string, pred: (std/core/sslice) -> (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>){
+    (match ((std/core/hnd/.perform1<(std/core/sslice) -> (std/core/total :: E) (std/core/types/maybe :: V -> V)<(a, std/core/sslice)>,(std/core/types/maybe :: V -> V)<a>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> std/text/parse/.select-satisfy<a,(e :: E),b>), pred))) {
+      ((std/core/types/Nothing() : (std/core/types/maybe :: V -> V)<a> ) as .pat: ((std/core/types/maybe :: V -> V)<a>))
+         -> std/core/hnd/.perform1<std/core/types/string,a,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> std/text/parse/.select-fail<a,(e :: E),b>), msg);
+      ((.skip std/core/types/Just((x: a) : a) : (std/core/types/maybe :: V -> V)<a> ) as .pat0: ((std/core/types/maybe :: V -> V)<a>))
+         -> x;
+    });
+  };
+inline fun pick // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(){
+    std/core/hnd/.perform0<std/core/types/bool,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), std/text/parse/.select-pick);
+  };
+fun count // inline size: 1
+  = forall<a,(e :: E)> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>>(n: std/core/types/int, p: (parser :: (E, V) -> V)<(e :: E),a>){
+    std/text/parse/count-acc<a,(e :: E)>(n, (std/core/Nil<a>), p);
+  };
+inline fun current-input // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(){
+    std/core/hnd/.perform0<std/core/sslice,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), std/text/parse/.select-current-input);
+  };
+fun (||) // inline size: 10
+  = forall<a,(e :: E)> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>>(p1: (parser :: (E, V) -> V)<(e :: E),a>, p2: (parser :: (E, V) -> V)<(e :: E),a>){
+    (match ((std/core/types/.open<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>,() -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/bool,() -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> std/core/types/bool>((fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(){
+      (std/core/hnd/.perform0<std/core/types/bool,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), std/text/parse/.select-pick));
+    }))())) {
+      ((std/core/types/True() : std/core/types/bool ) as .pat: std/core/types/bool)
+         -> p1();
+      ((.skip std/core/types/False() : std/core/types/bool ) as .pat0: std/core/types/bool)
+         -> p2();
+    });
+  };
+fun optional // inline size: 9
+  = forall<a,(e :: E)> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>>(default: a, p: (parser :: (E, V) -> V)<(e :: E),a>){
+    (match ((std/core/types/.open<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>,() -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/bool,() -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)> std/core/types/bool>((fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(){
+      (std/core/hnd/.perform0<std/core/types/bool,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), std/text/parse/.select-pick));
+    }))())) {
+      ((std/core/types/True() : std/core/types/bool ) as .pat: std/core/types/bool)
+         -> p();
+      ((.skip std/core/types/False() : std/core/types/bool ) as .pat0: std/core/types/bool)
+         -> default;
+    });
+  };
+fun many // inline size: 1
+  = forall<a,(e :: E)> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>>(p: (parser :: (E, V) -> V)<(e :: E),a>){
+    std/text/parse/many-acc<a,(e :: E)>(p, (std/core/Nil<a>));
+  };
+fun many1 // inline size: 3
+  = forall<a,(e :: E)> fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>|(e :: E)>>(p: (parser :: (E, V) -> V)<(e :: E),a>){
+    std/core/Cons<a>((p()), (std/text/parse/many-acc<a,(e :: E)>(p, (std/core/Nil<a>))));
+  };
+fun maybe // inline size: 2
+  = forall<a> fn(perr: (parse-error :: V -> V)<a>){
+    (match (perr) {
+      ((std/text/parse/ParseOk((x0: a) : a, ((.skip std/core/Sslice((.pat10: std/core/types/string) : std/core/types/string, (.pat20: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat3: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat00: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat2: ((parse-error :: V -> V)<a>))
+         -> std/core/types/Just<a>(x0);
+      ((.skip std/text/parse/ParseError((msg: std/core/types/string) : std/core/types/string, ((.skip std/core/Sslice((.pat6: std/core/types/string) : std/core/types/string, (.pat7: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat8: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as .pat5: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat4: ((parse-error :: V -> V)<a>))
+         -> std/core/types/Nothing<a>;
+    });
+  };
+fun one-of-or // inline size: 7
+  = fn<<(std/core/types/handled :: HX -> X)<(parse :: HX)>>>(chars: std/core/types/string, default: std/core/types/char){
+    match ((std/core/hnd/.perform0<std/core/types/bool,<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(.hnd-parse :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-parse :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-parse :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(parse :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), std/text/parse/.select-pick))) {
+      ((std/core/types/True() : std/core/types/bool ) as .pat: std/core/types/bool)
+         -> std/text/parse/one-of(chars);
+      ((.skip std/core/types/False() : std/core/types/bool ) as .pat0: std/core/types/bool)
+         -> default;
+    };
+  };
+fun starts-with // inline size: 7
+  = forall<a> fn(s: std/core/types/string, p: () -> <(std/core/types/handled :: HX -> X)<(parse :: HX)>> a){
+    (match ((std/text/parse/parse<a,(std/core/types/(<>) :: E)>((std/core/Sslice(s, (std/core/ssize_t(0)), (std/core/length(s)))), p))) {
+      ((std/text/parse/ParseOk((x: a) : a, ((.skip std/core/Sslice((.pat0: std/core/types/string) : std/core/types/string, (.pat1: std/core/types/ssize_t) : std/core/types/ssize_t, (.pat2: std/core/types/ssize_t) : std/core/types/ssize_t) : std/core/sslice ) as rest0: std/core/sslice) : std/core/sslice) : (parse-error :: V -> V)<a> ) as .pat: ((parse-error :: V -> V)<a>))
+         -> std/core/types/Just<(a, std/core/sslice)>((std/core/types/(,)<a,std/core/sslice>(x, rest0)));
+      (.pat3: ((parse-error :: V -> V)<a>))
+         -> std/core/types/Nothing<(a, std/core/sslice)>;
+    });
+  };

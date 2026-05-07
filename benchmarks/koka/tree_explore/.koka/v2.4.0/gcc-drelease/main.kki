@@ -1,0 +1,163 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:choose` effect
+recursive type .hnd-choose <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-choose(ctl-choose: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-choose :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-choose : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-choose :: (E, V) -> V),(e :: E),a>) -> (.hnd-choose :: (E, V) -> V)<(e :: E),a>;
+};
+// `:choose` effect
+type choose :: HX {
+  con Choose<(e :: E),a>((.hnd-choose :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-choose :: (E, V) -> V)<(e :: E),a>) -> (choose :: HX);
+};
+recursive type tree {
+  con Leaf : tree;
+  con Node(left: tree, value: std/core/types/int, right: tree) : (left : tree, value : std/core/types/int, right : tree) -> tree;
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// Automatically generated. Tests for the `Leaf` constructor of the `:tree` type.
+fun is-leaf : (^ tree : tree) -> std/core/types/bool;
+// Automatically generated. Tests for the `Node` constructor of the `:tree` type.
+fun is-node : (^ tree : tree) -> std/core/types/bool;
+// runtime tag for the `:choose` effect
+val .tag-choose : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-choose :: (E, V) -> V)>;
+// handler for the `:choose` effect
+fun .handle-choose : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-choose :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(choose :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `choose` operation out of the `:choose` effect handler
+fun .select-choose : forall<(e :: E),a> (^ hnd : (.hnd-choose :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-choose :: (E, V) -> V),(e :: E),a>;
+fun operator : (x : std/core/types/int, y : std/core/types/int) -> std/core/types/int;
+// call `choose` operation of the `:choose` effect
+fun choose : () -> <(std/core/types/handled :: HX -> X)<(choose :: HX)>> std/core/types/bool;
+fun make : (n : std/core/types/int) -> <(std/core/types/div :: E)> tree;
+// monadic lift
+fun .mlift871-op : forall<(h :: H)> (v : std/core/types/int, .y.860 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E)> std/core/types/int;
+// monadic lift
+fun .mlift872-op : forall<(h :: H)> (.y.857 : std/core/types/bool, l : tree, r : tree, state : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, v : std/core/types/int, wild_ : ()) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E)> std/core/types/int;
+// monadic lift
+fun .mlift873-op : forall<(h :: H)> (.y.857 : std/core/types/bool, l : tree, r : tree, state : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, v : std/core/types/int, .y.858 : std/core/types/int) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E)> std/core/types/int;
+// monadic lift
+fun .mlift874-op : forall<(h :: H)> (l : tree, r : tree, state : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, v : std/core/types/int, .y.857 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(choose :: HX)>> std/core/types/int;
+// lifted local: run, explore
+fun .lift750-run : forall<(h :: H)> (state : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, t : tree) -> <(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E)> std/core/types/int;
+// lifted local: run, loop
+fun .lift751-run : forall<(h :: H)> (explore : (t : tree) -> <(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>> std/core/types/int, state : (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, tree : tree, i : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>> std/core/types/int;
+fun run : (n : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: E),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+recursive specialize "*___" fun .lift751-run // inline size: 19
+  = forall<(h :: H)> fn<<(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>>(explore: (t : tree) -> <(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>> std/core/types/int, state: (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>, tree: tree, i: std/core/types/int){
+    (match ((std/core/(==.1)(i, 0))) {
+      ((std/core/types/True() : std/core/types/bool ) as .pat3: std/core/types/bool)
+         -> std/core/types/local-get<std/core/types/int,(h :: H),<(std/core/types/div :: E)>>(state);
+      ((.skip std/core/types/False() : std/core/types/bool ) as .pat4: std/core/types/bool)
+         -> val xs.738 : (std/core/list :: V -> V)<std/core/types/int>
+              = main/.handle-choose<std/core/types/int,<(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>,(std/core/list :: V -> V)<std/core/types/int>>((std/core/int32(3)), (main/.Hnd-choose<<(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>,(std/core/list :: V -> V)<std/core/types/int>>((std/core/hnd/clause-control0<std/core/types/bool,<(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>,(.hnd-choose :: (E, V) -> V),(std/core/list :: V -> V)<std/core/types/int>>((fn<<(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>>(resume: (std/core/types/bool) -> <(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>> (std/core/list :: V -> V)<std/core/types/int>){
+                  val xs0.740 : ((std/core/list :: V -> V)<std/core/types/int>)
+                    = (resume(std/core/types/True));
+                  val ys.741 : ((std/core/list :: V -> V)<std/core/types/int>)
+                    = (resume(std/core/types/False));
+                  (std/core/append<std/core/types/int>(xs0.740, ys.741));
+                }))))), (fn<<(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>>(x6: std/core/types/int){
+                  (std/core/Cons<std/core/types/int>(x6, (std/core/Nil<std/core/types/int>)));
+                }), (fn<<(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>>(){
+                  (explore(tree));
+                }));
+            val _0 : ()
+              = std/core/types/local-set<std/core/types/int,<(std/core/types/div :: E)>,(h :: H)>(state, (match (xs.738) {
+                  ((std/core/Nil() : (std/core/list :: V -> V)<std/core/types/int> ) as .pat10: ((std/core/list :: V -> V)<std/core/types/int>))
+                     -> (match ((std/core/types/None<std/core/types/int>)) {
+                      ((std/core/types/Optional((.default.14393: std/core/types/int) : std/core/types/int) : (std/core/types/optional :: V -> V)<std/core/types/int> ) as .pat5: ((std/core/types/optional :: V -> V)<std/core/types/int>))
+                         -> .default.14393;
+                      ((.skip std/core/types/None() : (std/core/types/optional :: V -> V)<std/core/types/int> ) as .pat00: ((std/core/types/optional :: V -> V)<std/core/types/int>))
+                         -> 0;
+                    });
+                  ((.skip std/core/Cons((x5: std/core/types/int) : std/core/types/int, (xx: (std/core/list :: V -> V)<std/core/types/int>) : (std/core/list :: V -> V)<std/core/types/int>) : (std/core/list :: V -> V)<std/core/types/int> ) as .pat20: ((std/core/list :: V -> V)<std/core/types/int>))
+                     -> std/core/.lift17493-maximum(xx, x5);
+                }));
+        (fn<<(std/core/types/div :: E),(std/core/types/local :: H -> X)<(h :: H)>>>(i: std/core/types/int){
+          main/.lift751-run<(h :: H)>(explore, state, tree, i);
+        })((std/core/int-sub(i, 1)));
+    });
+  };
+inline borrow "^" fun is-leaf // inline size: 1
+  = fn(tree: tree){
+    match (tree) {
+      ((main/Leaf() : tree ) as .pat: tree)
+         -> std/core/types/True;
+      ((.skip main/Node((.pat1: tree) : tree, (.pat2: std/core/types/int) : std/core/types/int, (.pat3: tree) : tree) : tree ) as .pat0: tree)
+         -> std/core/types/False;
+    };
+  };
+inline borrow "^" fun is-node // inline size: 1
+  = fn(tree: tree){
+    match (tree) {
+      ((main/Node((.pat0: tree) : tree, (.pat1: std/core/types/int) : std/core/types/int, (.pat2: tree) : tree) : tree ) as .pat: tree)
+         -> std/core/types/True;
+      ((.skip main/Leaf() : tree ) as .pat3: tree)
+         -> std/core/types/False;
+    };
+  };
+inline borrow "^" fun .select-choose // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-choose :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-choose((ctl-choose: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-choose :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-choose :: (E, V) -> V),(e :: E),a>) : (.hnd-choose :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-choose :: (E, V) -> V)<(e :: E),a>))
+         -> ctl-choose;
+    });
+  };
+fun operator // inline size: 5
+  = fn(x: std/core/types/int, y: std/core/types/int){
+    val y1.726 : std/core/types/int
+      = std/core/(*)(503, y);
+    val x0.723 : std/core/types/int
+      = std/core/int-sub(x, y1.726);
+    std/core/(%)((std/core/abs((std/core/int-add(x0.723, 37)))), 1009);
+  };
+inline fun choose // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(choose :: HX)>>>(){
+    std/core/hnd/.perform0<std/core/types/bool,<(std/core/types/handled :: HX -> X)<(choose :: HX)>>,(.hnd-choose :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(choose :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-choose :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(choose :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-choose :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-choose :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(choose :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(choose :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-choose);
+  };
+fun run // inline size: 6
+  = fn<<(std/core/types/div :: E)>>(n: std/core/types/int){
+    std/core/types/unsafe-no-local-cast<std/core/types/int,<(std/core/types/div :: E)>>((forall<(h :: H)> fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(){
+      val tree : tree
+            = main/make(n);
+      std/core/hnd/local-var<std/core/types/int,std/core/types/int,<(std/core/types/div :: E)>,(h :: H)>(0, (fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(state: (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>){
+          (main/.lift751-run<(h :: H)>((fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(choose :: HX)>,(std/core/types/div :: E)>>(t: tree){
+              (main/.lift750-run<(h :: H)>(state, t));
+            }), state, tree, 10));
+        }));
+    }))();
+  };

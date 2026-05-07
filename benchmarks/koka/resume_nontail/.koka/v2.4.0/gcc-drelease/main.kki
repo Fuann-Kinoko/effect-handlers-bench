@@ -1,0 +1,94 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:operator` effect
+recursive type .hnd-operator <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-operator(ctl-operator: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-operator :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-operator : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-operator :: (E, V) -> V),(e :: E),a>) -> (.hnd-operator :: (E, V) -> V)<(e :: E),a>;
+};
+// `:operator` effect
+type operator :: HX {
+  con Operator<(e :: E),a>((.hnd-operator :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-operator :: (E, V) -> V)<(e :: E),a>) -> (operator :: HX);
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// runtime tag for the `:operator` effect
+val .tag-operator : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-operator :: (E, V) -> V)>;
+// handler for the `:operator` effect
+fun .handle-operator : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-operator :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(operator :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `operator` operation out of the `:operator` effect handler
+fun .select-operator : forall<(e :: E),a> (^ hnd : (.hnd-operator :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-operator :: (E, V) -> V),(e :: E),a>;
+// call `operator` operation of the `:operator` effect
+fun operator : (x : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(operator :: HX)>> ();
+// monadic lift
+fun .mlift664-loop : (i : std/core/types/int, s : std/core/types/int, wild_ : ()) -> <(std/core/types/handled :: HX -> X)<(operator :: HX)>> std/core/types/int;
+fun loop : (i : std/core/types/int, s : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(operator :: HX)>> std/core/types/int;
+fun run : (n : std/core/types/int, s : std/core/types/int) -> <(std/core/types/div :: X)> std/core/types/int;
+// lifted local: repeat, step
+fun .lift553-repeat : (n : std/core/types/int, l : std/core/types/int, s : std/core/types/int) -> <(std/core/types/div :: X)> std/core/types/int;
+fun repeat : (n : std/core/types/int) -> <(std/core/types/div :: X)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: X),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+inline borrow "^" fun .select-operator // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-operator :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-operator((ctl-operator: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-operator :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-operator :: (E, V) -> V),(e :: E),a>) : (.hnd-operator :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-operator :: (E, V) -> V)<(e :: E),a>))
+         -> ctl-operator;
+    });
+  };
+inline fun operator // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(operator :: HX)>>>(x: std/core/types/int){
+    std/core/hnd/.perform1<std/core/types/int,(),<(std/core/types/handled :: HX -> X)<(operator :: HX)>>,(.hnd-operator :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(operator :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-operator :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(operator :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-operator :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-operator :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(operator :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(operator :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-operator, x);
+  };
+fun run // inline size: 11
+  = fn<<(std/core/types/div :: X)>>(n: std/core/types/int, s: std/core/types/int){
+    main/.handle-operator<std/core/types/int,<(std/core/types/div :: E)>,std/core/types/int>((std/core/int32(3)), (main/.Hnd-operator<<(std/core/types/div :: E)>,std/core/types/int>((std/core/hnd/clause-control1<std/core/types/int,(),<(std/core/types/div :: E)>,(.hnd-operator :: (E, V) -> V),std/core/types/int>((fn<<(std/core/types/div :: E)>>(x: std/core/types/int, resume: (()) -> <(std/core/types/div :: E)> std/core/types/int){
+        val y : std/core/types/int
+          = (resume(std/core/types/()));
+        val y1.544 : std/core/types/int
+          = (std/core/(*)(503, y));
+        val x0.541 : std/core/types/int
+          = (std/core/int-sub(x, y1.544));
+        (std/core/(%)((std/core/abs((std/core/int-add(x0.541, 37)))), 1009));
+      }))))), (fn<<(std/core/types/div :: E)>>(.x: std/core/types/int){
+        .x;
+      }), (fn<<(std/core/types/handled :: HX -> X)<(operator :: HX)>,(std/core/types/div :: E)>>(){
+        (main/loop(n, s));
+      }));
+  };
+fun repeat // inline size: 1
+  = fn<<(std/core/types/div :: X)>>(n: std/core/types/int){
+    main/.lift553-repeat(n, 1000, 0);
+  };

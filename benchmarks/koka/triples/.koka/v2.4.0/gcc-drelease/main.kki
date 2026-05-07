@@ -1,0 +1,123 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:fail` effect
+recursive type .hnd-fail <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-fail(ctl-fail: forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-fail :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-fail : forall<b> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<b,(.hnd-fail :: (E, V) -> V),(e :: E),a>) -> (.hnd-fail :: (E, V) -> V)<(e :: E),a>;
+};
+// handlers for the `:flip` effect
+recursive type .hnd-flip <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-flip(ctl-flip: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-flip :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-flip : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-flip :: (E, V) -> V),(e :: E),a>) -> (.hnd-flip :: (E, V) -> V)<(e :: E),a>;
+};
+// `:fail` effect
+type fail :: HX {
+  con Fail<(e :: E),a>((.hnd-fail :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-fail :: (E, V) -> V)<(e :: E),a>) -> (fail :: HX);
+};
+// `:flip` effect
+type flip :: HX {
+  con Flip<(e :: E),a>((.hnd-flip :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-flip :: (E, V) -> V)<(e :: E),a>) -> (flip :: HX);
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// runtime tag for the `:fail` effect
+val .tag-fail : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-fail :: (E, V) -> V)>;
+// handler for the `:fail` effect
+fun .handle-fail : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-fail :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(fail :: HX)>|(e :: E)> a) -> (e :: E) b;
+// runtime tag for the `:flip` effect
+val .tag-flip : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-flip :: (E, V) -> V)>;
+// handler for the `:flip` effect
+fun .handle-flip : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-flip :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(flip :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `fail` operation out of the `:fail` effect handler
+fun .select-fail : forall<a,(e :: E),b> (^ hnd : (.hnd-fail :: (E, V) -> V)<(e :: E),b>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<a,(.hnd-fail :: (E, V) -> V),(e :: E),b>;
+// select `flip` operation out of the `:flip` effect handler
+fun .select-flip : forall<(e :: E),a> (^ hnd : (.hnd-flip :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-flip :: (E, V) -> V),(e :: E),a>;
+fun hash : (.pat_25_10 : (std/core/types/int, std/core/types/int, std/core/types/int)) -> std/core/types/int;
+// call `fail` operation of the `:fail` effect
+fun fail : forall<a> () -> <(std/core/types/handled :: HX -> X)<(fail :: HX)>> a;
+// call `flip` operation of the `:flip` effect
+fun flip : () -> <(std/core/types/handled :: HX -> X)<(flip :: HX)>> std/core/types/bool;
+// monadic lift
+fun .mlift955-choice : (n : std/core/types/int, .y.928 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(flip :: HX)>,(std/core/types/handled :: HX -> X)<(fail :: HX)>,(std/core/types/div :: E)> std/core/types/int;
+fun choice : (n : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(fail :: HX)>,(std/core/types/handled :: HX -> X)<(flip :: HX)>> std/core/types/int;
+// monadic lift
+fun .mlift956-triple : (i : std/core/types/int, j : std/core/types/int, s : std/core/types/int, k : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(fail :: HX)>,(std/core/types/handled :: HX -> X)<(flip :: HX)>> (std/core/types/int, std/core/types/int, std/core/types/int);
+// monadic lift
+fun .mlift957-triple : (i : std/core/types/int, s : std/core/types/int, j : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(fail :: HX)>,(std/core/types/handled :: HX -> X)<(flip :: HX)>> (std/core/types/int, std/core/types/int, std/core/types/int);
+// monadic lift
+fun .mlift958-triple : (s : std/core/types/int, i : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(fail :: HX)>,(std/core/types/handled :: HX -> X)<(flip :: HX)>> (std/core/types/int, std/core/types/int, std/core/types/int);
+fun triple : (n : std/core/types/int, s : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(fail :: HX)>,(std/core/types/handled :: HX -> X)<(flip :: HX)>> (std/core/types/int, std/core/types/int, std/core/types/int);
+// monadic lift
+fun .mlift959-run : (.y.938 : (std/core/types/int, std/core/types/int, std/core/types/int)) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(fail :: HX)>,(std/core/types/handled :: HX -> X)<(flip :: HX)>> std/core/types/int;
+fun run : (n : std/core/types/int, s : std/core/types/int) -> <(std/core/types/div :: X)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: X),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+inline borrow "^" fun .select-fail // inline size: 0
+  = forall<a,(e :: E),b> fn(hnd: (.hnd-fail :: (E, V) -> V)<(e :: E),b>){
+    (match (hnd) {
+      ((.skip main/.Hnd-fail((ctl-fail: (forall<c> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<c,(.hnd-fail :: (E, V) -> V),(e :: E),b>)) : (forall<c> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<c,(.hnd-fail :: (E, V) -> V),(e :: E),b>)) : (.hnd-fail :: (E, V) -> V)<(e :: E),b> ) as .pat: ((.hnd-fail :: (E, V) -> V)<(e :: E),b>))
+         -> ctl-fail<a>;
+    });
+  };
+inline borrow "^" fun .select-flip // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-flip :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-flip((ctl-flip: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-flip :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/bool,(.hnd-flip :: (E, V) -> V),(e :: E),a>) : (.hnd-flip :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-flip :: (E, V) -> V)<(e :: E),a>))
+         -> ctl-flip;
+    });
+  };
+fun hash // inline size: 6
+  = fn(.pat_25_10: (std/core/types/int, std/core/types/int, std/core/types/int)){
+    match (.pat_25_10) {
+      ((.skip std/core/types/(,,)((a: std/core/types/int) : std/core/types/int, (b: std/core/types/int) : std/core/types/int, (c: std/core/types/int) : std/core/types/int) : (std/core/types/int, std/core/types/int, std/core/types/int) ) as .pat: (std/core/types/int, std/core/types/int, std/core/types/int))
+         -> val x0.807 : std/core/types/int
+              = std/core/(*)(53, a);
+            val y0.808 : std/core/types/int
+              = std/core/(*)(2809, b);
+            val x.805 : std/core/types/int
+              = std/core/int-add(x0.807, y0.808);
+            val y.806 : std/core/types/int
+              = std/core/(*)(148877, c);
+        std/core/(%)((std/core/int-add(x.805, y.806)), 1000000007);
+    };
+  };
+inline fun fail // inline size: 5
+  = forall<a> fn<<(std/core/types/handled :: HX -> X)<(fail :: HX)>>>(){
+    std/core/hnd/.perform0<a,<(std/core/types/handled :: HX -> X)<(fail :: HX)>>,(.hnd-fail :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(fail :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-fail :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(fail :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-fail :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-fail :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(fail :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(fail :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> main/.select-fail<a,(e :: E),b>));
+  };
+inline fun flip // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(flip :: HX)>>>(){
+    std/core/hnd/.perform0<std/core/types/bool,<(std/core/types/handled :: HX -> X)<(flip :: HX)>>,(.hnd-flip :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(flip :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-flip :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(flip :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-flip :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-flip :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(flip :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(flip :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-flip);
+  };

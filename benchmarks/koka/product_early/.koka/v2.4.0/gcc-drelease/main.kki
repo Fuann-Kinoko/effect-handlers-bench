@@ -1,0 +1,92 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:abort` effect
+recursive type .hnd-abort <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-abort(ctl-done: forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,b,(.hnd-abort :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (ctl-done : forall<b> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,b,(.hnd-abort :: (E, V) -> V),(e :: E),a>) -> (.hnd-abort :: (E, V) -> V)<(e :: E),a>;
+};
+// `:abort` effect
+type abort :: HX {
+  con Abort<(e :: E),a>((.hnd-abort :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-abort :: (E, V) -> V)<(e :: E),a>) -> (abort :: HX);
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// runtime tag for the `:abort` effect
+val .tag-abort : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-abort :: (E, V) -> V)>;
+// handler for the `:abort` effect
+fun .handle-abort : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-abort :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(abort :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `done` operation out of the `:abort` effect handler
+fun .select-done : forall<a,(e :: E),b> (^ hnd : (.hnd-abort :: (E, V) -> V)<(e :: E),b>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,a,(.hnd-abort :: (E, V) -> V),(e :: E),b>;
+// call `done` operation of the `:abort` effect
+fun done : forall<a> (i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(abort :: HX)>> a;
+fun .ctail-enumerate : (i : std/core/types/int, .acc : (std/core/types/ctail :: V -> V)<(std/core/list :: V -> V)<std/core/types/int>>) -> <(std/core/types/div :: E)> (std/core/list :: V -> V)<std/core/types/int>;
+fun enumerate : (i : std/core/types/int) -> <(std/core/types/div :: E)> (std/core/list :: V -> V)<std/core/types/int>;
+// monadic lift
+fun .mlift545-product : (y : std/core/types/int, .y.541 : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(abort :: HX)>> std/core/types/int;
+fun product : (xs : (std/core/list :: V -> V)<std/core/types/int>) -> <(std/core/types/handled :: HX -> X)<(abort :: HX)>> std/core/types/int;
+fun run-product : (xs : (std/core/list :: V -> V)<std/core/types/int>) -> std/core/types/int;
+// lifted local: run, loop
+fun .lift431-run : (xs : (std/core/list :: V -> V)<std/core/types/int>, i : std/core/types/int, a : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+fun run : (n : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: E),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+inline borrow "^" fun .select-done // inline size: 0
+  = forall<a,(e :: E),b> fn(hnd: (.hnd-abort :: (E, V) -> V)<(e :: E),b>){
+    (match (hnd) {
+      ((.skip main/.Hnd-abort((ctl-done: (forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,c,(.hnd-abort :: (E, V) -> V),(e :: E),b>)) : (forall<c> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,c,(.hnd-abort :: (E, V) -> V),(e :: E),b>)) : (.hnd-abort :: (E, V) -> V)<(e :: E),b> ) as .pat: ((.hnd-abort :: (E, V) -> V)<(e :: E),b>))
+         -> ctl-done<a>;
+    });
+  };
+inline fun done // inline size: 5
+  = forall<a> fn<<(std/core/types/handled :: HX -> X)<(abort :: HX)>>>(i: std/core/types/int){
+    std/core/hnd/.perform1<std/core/types/int,a,<(std/core/types/handled :: HX -> X)<(abort :: HX)>>,(.hnd-abort :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(abort :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-abort :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(abort :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-abort :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-abort :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(abort :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(abort :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), (forall<(e :: E),b> main/.select-done<a,(e :: E),b>), i);
+  };
+fun run-product // inline size: 5
+  = fn(xs: (std/core/list :: V -> V)<std/core/types/int>){
+    main/.handle-abort<std/core/types/int,(std/core/types/(<>) :: E),std/core/types/int>((std/core/int32(3)), (main/.Hnd-abort<(std/core/types/(<>) :: E),std/core/types/int>((forall<a> std/core/hnd/clause-control1<std/core/types/int,a,(std/core/types/(<>) :: E),(.hnd-abort :: (E, V) -> V),std/core/types/int>((fn(r: std/core/types/int, resume: (a) -> std/core/types/int){
+        r;
+      }))))), (fn(.x: std/core/types/int){
+        .x;
+      }), (fn<<(std/core/types/handled :: HX -> X)<(abort :: HX)>>>(){
+        (main/product(xs));
+      }));
+  };
+fun run // inline size: 2
+  = fn<<(std/core/types/div :: E)>>(n: std/core/types/int){
+    val xs : (std/core/list :: V -> V)<std/core/types/int>
+          = main/enumerate(1000);
+    main/.lift431-run(xs, n, 0);
+  };

@@ -1,0 +1,81 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:prime` effect
+recursive type .hnd-prime <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-prime(fun-prime: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/bool,(.hnd-prime :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (fun-prime : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/bool,(.hnd-prime :: (E, V) -> V),(e :: E),a>) -> (.hnd-prime :: (E, V) -> V)<(e :: E),a>;
+};
+// `:prime` effect
+type prime :: HX {
+  con Prime<(e :: E),a>((.hnd-prime :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-prime :: (E, V) -> V)<(e :: E),a>) -> (prime :: HX);
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// runtime tag for the `:prime` effect
+val .tag-prime : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-prime :: (E, V) -> V)>;
+// handler for the `:prime` effect
+fun .handle-prime : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-prime :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(prime :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `prime` operation out of the `:prime` effect handler
+fun .select-prime : forall<(e :: E),a> (^ hnd : (.hnd-prime :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/bool,(.hnd-prime :: (E, V) -> V),(e :: E),a>;
+// call `prime` operation of the `:prime` effect
+fun prime : (e : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(prime :: HX)>> std/core/types/bool;
+// monadic lift
+fun .mlift542-primes : (a : std/core/types/int, i : std/core/types/int, n : std/core/types/int, .y.523 : std/core/types/bool) -> <(std/core/types/handled :: HX -> X)<(prime :: HX)>> std/core/types/int;
+fun primes : (i : std/core/types/int, n : std/core/types/int, a : std/core/types/int) -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(prime :: HX)>> std/core/types/int;
+pub fun run : (n : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: E),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+inline borrow "^" fun .select-prime // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-prime :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-prime((fun-prime: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/bool,(.hnd-prime :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,std/core/types/bool,(.hnd-prime :: (E, V) -> V),(e :: E),a>) : (.hnd-prime :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-prime :: (E, V) -> V)<(e :: E),a>))
+         -> fun-prime;
+    });
+  };
+inline fun prime // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(prime :: HX)>>>(e: std/core/types/int){
+    std/core/hnd/.perform1<std/core/types/int,std/core/types/bool,<(std/core/types/handled :: HX -> X)<(prime :: HX)>>,(.hnd-prime :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(prime :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-prime :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(prime :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-prime :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-prime :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(prime :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(prime :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-prime, e);
+  };
+fun run // inline size: 5
+  = fn<<(std/core/types/div :: E)>>(n: std/core/types/int){
+    main/.handle-prime<std/core/types/int,<(std/core/types/div :: E)>,std/core/types/int>((std/core/int32(1)), (main/.Hnd-prime<<(std/core/types/div :: E)>,std/core/types/int>((std/core/hnd/clause-tail-noyield1<<(std/core/types/div :: E)>,std/core/types/int,std/core/types/int,std/core/types/bool,(.hnd-prime :: (E, V) -> V)>((fn<<(std/core/types/div :: E)>>(e: std/core/types/int){
+        std/core/types/True;
+      }))))), (fn<<(std/core/types/div :: E)>>(.x: std/core/types/int){
+        .x;
+      }), (fn<<(std/core/types/handled :: HX -> X)<(prime :: HX)>,(std/core/types/div :: E)>>(){
+        (main/primes(2, n, 0));
+      }));
+  };

@@ -1,0 +1,104 @@
+module interface main
+ 
+//------------------------------
+//#kki: import declarations
+ 
+import std/core/types = std/core/types = "";
+import std/core/hnd = std/core/hnd = "";
+import std/core = std/core = "";
+import std/os/path = std/os/path = "";
+import std/os/env = std/os/env = "";
+ 
+//------------------------------
+//#kki: external imports
+ 
+ 
+//------------------------------
+//#kki: fixity declarations
+ 
+ 
+//------------------------------
+//#kki: local imported aliases
+ 
+ 
+//------------------------------
+//#kki: type declarations
+ 
+// handlers for the `:state` effect
+recursive type .hnd-state <(e :: E),a> :: (E, V) -> V {
+  con .Hnd-state(fun-get: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/int,(.hnd-state :: (E, V) -> V),(e :: E),a>, fun-set: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-state :: (E, V) -> V),(e :: E),a>) : forall<(e :: E),a> (fun-get : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/int,(.hnd-state :: (E, V) -> V),(e :: E),a>, fun-set : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-state :: (E, V) -> V),(e :: E),a>) -> (.hnd-state :: (E, V) -> V)<(e :: E),a>;
+};
+// `:state` effect
+type state :: HX {
+  con State<(e :: E),a>((.hnd-state :: (E, V) -> V)<(e :: E),a>) : forall<(e :: E),a> ((.hnd-state :: (E, V) -> V)<(e :: E),a>) -> (state :: HX);
+};
+ 
+//------------------------------
+//#kki: declarations
+ 
+// runtime tag for the `:state` effect
+val .tag-state : (std/core/hnd/htag :: ((E, V) -> V) -> V)<(.hnd-state :: (E, V) -> V)>;
+// handler for the `:state` effect
+fun .handle-state : forall<a,(e :: E),b> (cfc : std/core/types/int32, hnd : (.hnd-state :: (E, V) -> V)<(e :: E),b>, ret : (res : a) -> (e :: E) b, action : () -> <(std/core/types/handled :: HX -> X)<(state :: HX)>|(e :: E)> a) -> (e :: E) b;
+// select `get` operation out of the `:state` effect handler
+fun .select-get : forall<(e :: E),a> (^ hnd : (.hnd-state :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/int,(.hnd-state :: (E, V) -> V),(e :: E),a>;
+// select `set` operation out of the `:state` effect handler
+fun .select-set : forall<(e :: E),a> (^ hnd : (.hnd-state :: (E, V) -> V)<(e :: E),a>) -> (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-state :: (E, V) -> V),(e :: E),a>;
+// call `get` operation of the `:state` effect
+fun get : () -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> std/core/types/int;
+// call `set` operation of the `:state` effect
+fun set : (i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> ();
+// monadic lift
+fun .mlift579-countdown : (wild_ : ()) -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> std/core/types/int;
+// monadic lift
+fun .mlift580-countdown : (i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> std/core/types/int;
+fun countdown : () -> <(std/core/types/div :: E),(std/core/types/handled :: HX -> X)<(state :: HX)>> std/core/types/int;
+fun run : (n : std/core/types/int) -> <(std/core/types/div :: E)> std/core/types/int;
+pub fun main : () -> <(std/core/console :: X),(std/core/types/div :: E),(std/core/types/ndet :: X)> ();
+ 
+//------------------------------
+//#kki: external declarations
+ 
+ 
+//------------------------------
+//#kki: inline definitions
+ 
+//.inline-section
+inline borrow "^" fun .select-get // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-state :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-state((fun-get: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/int,(.hnd-state :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/int,(.hnd-state :: (E, V) -> V),(e :: E),a>, (.pat0: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-state :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-state :: (E, V) -> V),(e :: E),a>) : (.hnd-state :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-state :: (E, V) -> V)<(e :: E),a>))
+         -> fun-get;
+    });
+  };
+inline borrow "^" fun .select-set // inline size: 0
+  = forall<(e :: E),a> fn(hnd: (.hnd-state :: (E, V) -> V)<(e :: E),a>){
+    (match (hnd) {
+      ((.skip main/.Hnd-state((.pat0: (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/int,(.hnd-state :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause0 :: (V, (E, V) -> V, E, V) -> V)<std/core/types/int,(.hnd-state :: (E, V) -> V),(e :: E),a>, (fun-set: (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-state :: (E, V) -> V),(e :: E),a>) : (std/core/hnd/clause1 :: (V, V, (E, V) -> V, E, V) -> V)<std/core/types/int,(),(.hnd-state :: (E, V) -> V),(e :: E),a>) : (.hnd-state :: (E, V) -> V)<(e :: E),a> ) as .pat: ((.hnd-state :: (E, V) -> V)<(e :: E),a>))
+         -> fun-set;
+    });
+  };
+inline fun get // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(state :: HX)>>>(){
+    std/core/hnd/.perform0<std/core/types/int,<(std/core/types/handled :: HX -> X)<(state :: HX)>>,(.hnd-state :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(state :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-state :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-state :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-state :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(state :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-get);
+  };
+inline fun set // inline size: 5
+  = fn<<(std/core/types/handled :: HX -> X)<(state :: HX)>>>(i: std/core/types/int){
+    std/core/hnd/.perform1<std/core/types/int,(),<(std/core/types/handled :: HX -> X)<(state :: HX)>>,(.hnd-state :: (E, V) -> V)>((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(state :: HX)>>,(i : std/core/hnd/ev-index) -> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-state :: (E, V) -> V)>,(i : std/core/hnd/ev-index) -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> (std/core/hnd/ev :: ((E, V) -> V) -> V)<(.hnd-state :: (E, V) -> V)>>((std/core/hnd/.evv-at<(.hnd-state :: (E, V) -> V)>))((std/core/types/.open<(std/core/types/(<>) :: E),<(std/core/types/handled :: HX -> X)<(state :: HX)>>,(i : std/core/types/int) -> std/core/types/ssize_t,(i : std/core/types/int) -> <(std/core/types/handled :: HX -> X)<(state :: HX)>> std/core/types/ssize_t>(std/core/ssize_t)(0)))), main/.select-set, i);
+  };
+fun run // inline size: 11
+  = fn<<(std/core/types/div :: E)>>(n: std/core/types/int){
+    std/core/types/unsafe-no-local-cast<std/core/types/int,<(std/core/types/div :: E)>>((forall<(h :: H)> fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(){
+      std/core/hnd/local-var<std/core/types/int,std/core/types/int,<(std/core/types/div :: E)>,(h :: H)>(n, (fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(s: (std/core/types/local-var :: (H, V) -> V)<(h :: H),std/core/types/int>){
+          (main/.handle-state<std/core/types/int,<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>,std/core/types/int>((std/core/int32(1)), (main/.Hnd-state<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>,std/core/types/int>((std/core/hnd/clause-tail-noyield0<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>,std/core/types/int,std/core/types/int,(.hnd-state :: (E, V) -> V)>((fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(){
+                (std/core/types/local-get<std/core/types/int,(h :: H),<(std/core/types/div :: E)>>(s));
+              }))), (std/core/hnd/clause-tail-noyield1<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>,std/core/types/int,std/core/types/int,(),(.hnd-state :: (E, V) -> V)>((fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(i: std/core/types/int){
+                (std/core/types/local-set<std/core/types/int,<(std/core/types/div :: E)>,(h :: H)>(s, i));
+              }))))), (fn<<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(.x: std/core/types/int){
+              .x;
+            }), (fn<<(std/core/types/handled :: HX -> X)<(state :: HX)>,(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/div :: E)>>(){
+              (std/core/hnd/.mask-builtin<std/core/types/int,<(std/core/types/handled :: HX -> X)<(state :: HX)>,(std/core/types/div :: E)>,<(std/core/types/local :: H -> X)<(h :: H)>,(std/core/types/handled :: HX -> X)<(state :: HX)>,(std/core/types/div :: E)>>(main/countdown));
+            })));
+        }));
+    }))();
+  };
